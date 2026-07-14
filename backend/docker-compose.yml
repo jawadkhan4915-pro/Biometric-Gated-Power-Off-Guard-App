@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: power-guard-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/power_guard
+      - JWT_SECRET=supersecretjwtkey_change_in_production_123!
+      - JWT_REFRESH_SECRET=supersecretjwtrefreshkey_change_in_production_456!
+      - JWT_EXPIRES_IN=15m
+      - JWT_REFRESH_EXPIRES_IN=7d
+      - EMERGENCY_OVERRIDE_COOLDOWN_MINUTES=15
+    depends_on:
+      - mongodb
+    restart: always
+
+  mongodb:
+    image: mongo:6.0
+    container_name: power-guard-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+volumes:
+  mongo-data:
