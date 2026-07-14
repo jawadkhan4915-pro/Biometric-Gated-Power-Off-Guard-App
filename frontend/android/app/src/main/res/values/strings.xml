@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accessibility_description">Intercepts power button presses and system dialog overlays to require biometrics before device shutdown.</string>
+</resources>
