@@ -11,15 +11,14 @@ let otherAuthToken;
 let userId;
 
 beforeAll(async () => {
-  jest.setTimeout(60000);
   await mongoose.disconnect();
   await mongoose.connect(TEST_MONGODB_URI);
-});
+}, 60000);
 
 afterAll(async () => {
   await mongoose.connection.db.dropDatabase();
   await mongoose.disconnect();
-});
+}, 60000);
 
 beforeEach(async () => {
   await User.deleteMany({});
@@ -36,7 +35,7 @@ beforeEach(async () => {
     .post('/auth/register')
     .send({ email: 'other@guard.com', password: 'password123' });
   otherAuthToken = otherUser.body.accessToken;
-});
+}, 60000);
 
 describe('Device Management API Endpoints', () => {
   const dummyPublicKey = '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAz7...\n-----END PUBLIC KEY-----';
