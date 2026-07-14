@@ -2,8 +2,10 @@ import 'package:flutter/material';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
 import 'screens/splash_screen.dart';
 import 'screens/verification_challenge_screen.dart';
+import 'providers/device_provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -16,20 +18,42 @@ void main() {
   );
 }
 
-class SecureGuardApp extends StatefulWidget {
+class SecureGuardApp extends ConsumerStatefulWidget {
   const SecureGuardApp({super.key});
 
   @override
-  State<SecureGuardApp> createState() => _SecureGuardAppState();
+  ConsumerState<SecureGuardApp> createState() => _SecureGuardAppState();
 }
 
-class _SecureGuardAppState extends State<SecureGuardApp> {
+class _SecureGuardAppState extends ConsumerState<SecureGuardApp> with WidgetsBindingObserver {
   static const _platform = MethodChannel('com.example.power_guard/platform_channel');
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _setupMethodChannelListener();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      // Re-verify identity on iOS foreground resumption
+      final device = ref.read(deviceProvider);
+      if (Platform.isIOS && device.status == 'Protected') {
+        navigatorKey.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const VerificationChallengeScreen()),
+          (route) => false,
+        );
+      }
+    }
   }
 
   void _setupMethodChannelListener() {
