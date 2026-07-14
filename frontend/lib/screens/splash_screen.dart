@@ -85,7 +85,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0Color.fromARGB(255, 15, 20, 32).value),
+      backgroundColor: const Color(0xFF0F1420),
       body: Center(
         child: FadeTransition(
           opacity: _fadeAnimation,
