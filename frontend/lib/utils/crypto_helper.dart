@@ -19,7 +19,7 @@ class CryptoHelper {
     secureRandom.seed(KeyParameter(Uint8List.fromList(seeds)));
 
     final keyGen = RSAKeyGenerator();
-    keyGen.init(ParametersWithSource(
+    keyGen.init(ParametersWithRandom(
       RSAKeyGeneratorParameters(BigInt.parse('65537'), 2048, 64),
       secureRandom,
     ));
