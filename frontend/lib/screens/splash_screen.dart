@@ -36,7 +36,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
   @override
   void dispose() {
     _controller.dispose();
-    super.initState();
+    super.dispose();
   }
 
   Future<void> _initializeApp() async {
