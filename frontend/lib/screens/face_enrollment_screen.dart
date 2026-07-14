@@ -91,7 +91,7 @@ class _FaceEnrollmentScreenState extends ConsumerState<FaceEnrollmentScreen> {
     }
 
     // Trigger haptic success feedback
-    HapticFeedback.lightCheck();
+    HapticFeedback.lightImpact();
 
     // Record mock keypoints coordinates for this angle
     _capturedKeypoints.add([12.3 * _currentStep, 45.6 * _currentStep, 78.9 * _currentStep]);
